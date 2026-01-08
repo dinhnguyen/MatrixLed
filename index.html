@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Led - Screen Measurement Tool</title>
+    <meta name="description"
+        content="Precise screen measurement tool with rulers, markers, guidelines, and custom shapes for developers and designers.">
+    <link rel="stylesheet" href="style.css?v=6">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Skip to main content link for keyboard users -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <main class="start-screen" id="main-content">
+        <h1>Matrix Led</h1>
+        <p>Advanced Screen Measurement & Layout Verification.</p>
+        <button id="startBtn" class="btn-start">Gét Gô</button>
+
+    </main>
+
+    <div class="measurement-ui">
+        <div class="ruler ruler-top"></div>
+        <div class="ruler ruler-left"></div>
+        <div class="ruler ruler-right"></div>
+        <div class="ruler ruler-bottom"></div>
+
+        <div class="dimensions-display">
+            <div class="dimensions-value">1920 &times; 1080</div>
+            <div class="dimensions-label">Pixels (px)</div>
+            <!-- Center Toolbar -->
+            <div class="toolbar toolbar-center" role="toolbar" aria-label="Measurement tools">
+                <button id="exitFullScreenBtn" class="btn-icon" title="Exit Fullscreen (Esc)"
+                    aria-label="Exit fullscreen mode" data-tooltip="Exit Fullscreen (Esc)" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        aria-hidden="true">
+                        <path d="M8 3v3a2 2 0 0 1-2 2H3"></path>
+                        <path d="M21 8h-3a2 2 0 0 1-2-2V3"></path>
+                        <path d="M3 16h3a2 2 0 0 1 2 2v3"></path>
+                        <path d="M16 21v-3a2 2 0 0 1 2-2h3"></path>
+                    </svg>
+                </button>
+                <button id="toggleGuidelinesBtn" class="btn-icon" title="Toggle Guidelines (G)"
+                    aria-label="Toggle measurement guidelines" aria-pressed="false" data-tooltip="Guidelines (G)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        aria-hidden="true">
+                        <path d="M5 3v18" />
+                        <path d="M19 3v18" />
+                        <path d="M3 5h18" />
+                        <path d="M3 19h18" />
+                    </svg>
+                </button>
+                <button id="settingsBtn" class="btn-icon" title="Settings (S)" aria-label="Open settings panel"
+                    aria-haspopup="dialog" data-tooltip="Settings (S)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        aria-hidden="true">
+                        <path
+                            d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.74v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
+                        </path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
+                <button id="userGuideBtn" class="btn-icon" title="User Guide" aria-label="Open user guide"
+                    aria-haspopup="dialog" data-tooltip="User Guide">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        aria-hidden="true">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="keyboard-hint">
+                Press <kbd>G</kbd> to toggle guidelines, <kbd>S</kbd> for settings, <kbd>Esc</kbd> to exit
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="settings-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"
+            aria-hidden="true">
+            <div class="v-modal-glass settings-content">
+                <div class="settings-header">
+                    <div class="drag-handle" title="Drag to move" aria-label="Drag to reposition modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <polyline points="5 9 2 12 5 15" />
+                            <polyline points="9 5 12 2 15 5" />
+                            <polyline points="15 19 12 22 9 19" />
+                            <polyline points="19 9 22 12 19 15" />
+                            <line x1="2" y1="12" x2="22" y2="12" />
+                            <line x1="12" y1="2" x2="12" y2="22" />
+                        </svg>
+                    </div>
+                    <h2 id="modal-title">Configuration</h2>
+                    <button id="closeSettingsBtn" class="btn-close" aria-label="Close settings">&times;</button>
+                </div>
+
+                <div class="tabs" role="tablist" aria-label="Configuration sections">
+                    <button class="tab-btn active" data-tab="tab-presets" role="tab" aria-selected="true"
+                        aria-controls="tab-presets">Presets</button>
+                    <button class="tab-btn" data-tab="tab-markers" role="tab" aria-selected="false"
+                        aria-controls="tab-markers">Markers</button>
+                    <button class="tab-btn" data-tab="tab-shapes" role="tab" aria-selected="false"
+                        aria-controls="tab-shapes">Shapes</button>
+                    <button class="tab-btn" data-tab="tab-overlay" role="tab" aria-selected="false"
+                        aria-controls="tab-overlay">Overlay</button>
+                </div>
+
+                <div class="tab-content active" id="tab-presets" role="tabpanel" aria-labelledby="tab-presets">
+                    <div class="tab-section-header">
+                        <p>Save and load measurement configurations</p>
+                    </div>
+
+                    <div class="form-section">
+                        <h4 class="section-title">Saved Configurations</h4>
+                        <div class="preset-list" id="presetList">
+                            <!-- Presets generated via JS -->
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="display: none;">
+                        <h4 class="section-title">Data Management</h4>
+                        <div class="preset-export-section">
+                            <button id="exportAllPresetsBtn" class="btn-secondary"
+                                title="Export all presets to JSON file">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Export All
+                            </button>
+                            <button id="importPresetsBtn" class="btn-secondary" title="Import presets from JSON file">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                Import
+                            </button>
+
+                        </div>
+                    </div>
+                    <input type="file" id="importFileInput" accept=".json" style="display: none;"
+                        aria-label="Choose preset file to import">
+                    <input type="file" id="importSingleFileInput" accept=".json" style="display: none;"
+                        aria-label="Choose single preset file to import">
+                </div>
+
+                <div class="tab-content" id="tab-markers" role="tabpanel" aria-labelledby="tab-markers">
+                    <div class="tab-section-header">
+                        <p>Define custom measurement points on the grid</p>
+                    </div>
+
+                    <div class="form-section">
+                        <h4 class="section-title">Manual Input</h4>
+                        <div class="form-group">
+                            <label for="inputXPoints">Horizontal Axis Points (px)</label>
+                            <textarea id="inputXPoints" rows="2" placeholder="e.g. 100, 200, 480"
+                                aria-describedby="x-points-help"></textarea>
+                            <small id="x-points-help" class="form-help">Enter comma-separated pixel values</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputYPoints">Vertical Axis Points (px)</label>
+                            <textarea id="inputYPoints" rows="2" placeholder="e.g. 100, 320, 640"
+                                aria-describedby="y-points-help"></textarea>
+                            <small id="y-points-help" class="form-help">Enter comma-separated pixel values</small>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button id="applyMarkersBtn" class="btn-primary">Apply Grid Changes</button>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-shapes" role="tabpanel" aria-labelledby="tab-shapes">
+                    <div class="tab-section-header">
+                        <p>Create and manage reference rectangles</p>
+                    </div>
+
+                    <div class="shape-controls">
+                        <div class="form-section">
+                            <h4 class="section-title">New Shape</h4>
+                            <div class="shape-form">
+                                <div class="shape-form-row">
+                                    <div class="form-field" style="flex: 2;">
+                                        <label for="shapeName">Label</label>
+                                        <input type="text" id="shapeName" placeholder="e.g. Hero Section" value="Rect 1"
+                                            aria-label="Shape name">
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="shapeColor">Color</label>
+                                        <input type="color" id="shapeColor" value="#00ff9d" aria-label="Shape color">
+                                    </div>
+                                </div>
+                                <div class="shape-form-row">
+                                    <div class="form-field">
+                                        <label for="shapeX">X (px)</label>
+                                        <input type="number" id="shapeX" value="100" aria-label="X position">
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="shapeY">Y (px)</label>
+                                        <input type="number" id="shapeY" value="100" aria-label="Y position">
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="shapeW">Width</label>
+                                        <input type="number" id="shapeW" value="200" aria-label="Width">
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="shapeH">Height</label>
+                                        <input type="number" id="shapeH" value="100" aria-label="Height">
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="addShapeBtn" class="btn-secondary" style="margin-top: 16px;">Add New
+                                Shape</button>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="margin-top:24px;">
+                        <h4 class="section-title">Active Shapes</h4>
+                        <div class="shape-list" id="shapeList">
+                            <!-- Shape items here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-overlay" role="tabpanel" aria-labelledby="tab-overlay">
+                    <div class="tab-section-header">
+                        <p>Compare your development with design mockups</p>
+                    </div>
+
+                    <div class="overlay-controls">
+                        <div class="form-section">
+                            <h4 class="section-title">Reference Image</h4>
+                            <div class="form-group">
+                                <label for="overlayImageInput">Select Image File</label>
+                                <input type="file" id="overlayImageInput" accept="image/*"
+                                    aria-label="Choose background image">
+                                <small class="form-help">Upload PNG or JPG to overlay on top of the measurement
+                                    tool</small>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h4 class="section-title">Adjustments</h4>
+                            <div class="form-group">
+                                <label for="overlayOpacity">Opacity: <span id="overlayOpacityValue">50</span>%</label>
+                                <input type="range" id="overlayOpacity" min="0" max="100" value="50"
+                                    aria-label="Background overlay opacity">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="overlayScale">Scale: <span id="overlayScaleValue">100</span>%</label>
+                                <input type="range" id="overlayScale" min="10" max="200" value="100"
+                                    aria-label="Background overlay scale">
+                            </div>
+
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="overlayLock" aria-label="Lock overlay position">
+                                    <span>Lock Position (prevent dragging)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h4 class="section-title">Actions & Info</h4>
+                            <div class="overlay-actions" style="margin-bottom: 16px;">
+                                <button id="overlayResetBtn" class="btn-secondary">Reset Position</button>
+                                <button id="overlayClearBtn" class="btn-secondary">Clear Image</button>
+                            </div>
+                            <div class="overlay-info">
+                                <small class="form-help"
+                                    style="display: block; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
+                                    <strong>💡 Pro Tip:</strong> You can click and drag the uploaded image anywhere on
+                                    the screen to align it with your work.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- User Guide Modal -->
+        <div id="userGuideModal" class="settings-modal" role="dialog" aria-modal="true"
+            aria-labelledby="guide-modal-title" aria-hidden="true">
+            <div class="v-modal-glass user-guide-content">
+                <div class="settings-header">
+                    <div class="drag-handle" title="Drag to move" aria-label="Drag to reposition modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <polyline points="5 9 2 12 5 15" />
+                            <polyline points="9 5 12 2 15 5" />
+                            <polyline points="15 19 12 22 9 19" />
+                            <polyline points="19 9 22 12 19 15" />
+                            <line x1="2" y1="12" x2="22" y2="12" />
+                            <line x1="12" y1="2" x2="12" y2="22" />
+                        </svg>
+                    </div>
+                    <h2 id="guide-modal-title">User Guide</h2>
+                    <button id="closeUserGuideBtn" class="btn-close" aria-label="Close user guide">&times;</button>
+                </div>
+
+                <div class="guide-body" id="guide-en">
+                    <div class="tab-section-header" style="border-bottom: none; margin-bottom: 0;">
+                        <h3>🚀 Getting Started</h3>
+                        <p>Learn how to use Matrix Led measurement tool</p>
+                    </div>
+
+                    <div class="form-section">
+                        <h4 class="section-title">Workflow</h4>
+                        <ol style="padding-left: 20px;">
+                            <li><strong>Start</strong>: Click <strong>"Gét Gô"</strong> on the main screen.</li>
+                            <li><strong>Fullscreen</strong>: Use for most accurate measurements. Exit with
+                                <code>Esc</code>.
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="form-section">
+                        <h4 class="section-title">Core Features</h4>
+                        <ul style="padding-left: 20px;">
+                            <li style="margin-bottom: 12px;"><strong>Rulers</strong>: Real-time pixel rulers on all 4
+                                edges.</li>
+                            <li style="margin-bottom: 12px;"><strong>Guidelines</strong>: Toggle with <code>G</code> to
+                                see precise intersection coordinates.</li>
+                            <li style="margin-bottom: 12px;"><strong>Custom Shapes</strong>: Press <code>S</code> to
+                                open settings and draw reference rectangles.</li>
+                            <li style="margin-bottom: 12px;"><strong>Background Overlay</strong>: Upload design mockups
+                                to compare with your live implementation.</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-section">
+                        <h4 class="section-title">Keyboard Controls</h4>
+                        <ul style="padding-left: 20px; list-style: none;">
+                            <li style="margin-bottom: 8px;"><code>G</code> &mdash; Toggle Guidelines</li>
+                            <li style="margin-bottom: 8px;"><code>S</code> &mdash; Settings Panel</li>
+                            <li style="margin-bottom: 8px;"><code>Esc</code> &mdash; Exit / Close</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Container for background overlay -->
+        <div id="backgroundOverlay" class="background-overlay"></div>
+        <!-- Container for dynamic shapes -->
+        <div id="shapesContainer"></div>
+        <!-- Container for guidelines -->
+        <div id="guidelinesContainer"></div>
+
+        <!-- Confirmation Dialog -->
+        <div id="confirmDialog" class="confirm-dialog" role="alertdialog" aria-modal="true"
+            aria-labelledby="confirm-title" aria-describedby="confirm-message" aria-hidden="true">
+            <div class="v-modal-glass confirm-content">
+                <h3 id="confirm-title">Confirm Action</h3>
+                <p id="confirm-message">Are you sure?</p>
+                <div class="confirm-actions">
+                    <button id="confirmCancelBtn" class="btn-secondary" style="min-width: 100px;">Cancel</button>
+                    <button id="confirmOkBtn" class="btn-primary" style="min-width: 100px;">OK</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Dialog handled above -->
+
+        <script src="script.js?v=6"></script>
+</body>
+
+</html>
