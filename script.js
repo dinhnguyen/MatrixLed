@@ -259,6 +259,52 @@ function renderShapes() {
         el.style.borderColor = shape.color;
         el.style.color = shape.color;
 
+        // Add content based on type
+        if (shape.contentType && shape.contentUrl) {
+            if (shape.contentType === 'image') {
+                const img = document.createElement('img');
+                img.src = shape.contentUrl;
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                img.style.position = 'absolute';
+                img.style.top = '0';
+                img.style.left = '0';
+                el.appendChild(img);
+            } else if (shape.contentType === 'iframe') {
+                const iframe = document.createElement('iframe');
+                iframe.src = shape.contentUrl;
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                iframe.style.border = 'none';
+                iframe.style.position = 'absolute';
+                iframe.style.top = '0';
+                iframe.style.left = '0';
+                el.appendChild(iframe);
+            } else if (shape.contentType === 'youtube') {
+                // Convert YouTube URL to embed format
+                let embedUrl = shape.contentUrl;
+                if (embedUrl.includes('watch?v=')) {
+                    const videoId = embedUrl.split('watch?v=')[1].split('&')[0];
+                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                } else if (embedUrl.includes('youtu.be/')) {
+                    const videoId = embedUrl.split('youtu.be/')[1].split('?')[0];
+                    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                }
+
+                const iframe = document.createElement('iframe');
+                iframe.src = embedUrl;
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                iframe.style.border = 'none';
+                iframe.style.position = 'absolute';
+                iframe.style.top = '0';
+                iframe.style.left = '0';
+                iframe.setAttribute('allowfullscreen', 'true');
+                el.appendChild(iframe);
+            }
+        }
+
         const labelPos = document.createElement('div');
         labelPos.className = 'shape-label-pos';
         labelPos.innerText = `${shape.x}, ${shape.y} - ${shape.name}`;
@@ -363,7 +409,9 @@ function addShape() {
         y: parseInt(shapeY.value) || 0,
         w: parseInt(shapeW.value) || 100,
         h: parseInt(shapeH.value) || 100,
-        color: shapeColor.value
+        color: shapeColor.value,
+        contentType: 'none', // none, image, iframe, youtube
+        contentUrl: ''
     };
     appState.config.shapes.push(s);
 
@@ -452,6 +500,44 @@ function renderShapeList() {
         dimsSection.appendChild(inputW);
         dimsSection.appendChild(inputH);
 
+        // Content section (type + URL)
+        const contentSection = document.createElement('div');
+        contentSection.className = 'shape-item-content';
+        contentSection.style.marginTop = '8px';
+        contentSection.style.display = 'flex';
+        contentSection.style.gap = '8px';
+
+        const contentTypeSelect = document.createElement('select');
+        contentTypeSelect.className = 'shape-item-select';
+        contentTypeSelect.setAttribute('aria-label', `Shape ${idx + 1} content type`);
+        contentTypeSelect.innerHTML = `
+            <option value="none">No Content</option>
+            <option value="image">Static Image</option>
+            <option value="iframe">Web Iframe</option>
+            <option value="youtube">YouTube Video</option>
+        `;
+        contentTypeSelect.value = shape.contentType || 'none';
+        contentTypeSelect.onchange = (e) => {
+            updateShape(idx, 'contentType', e.target.value);
+            renderShapeList(); // Re-render to show/hide URL input
+        };
+
+        const inputUrl = document.createElement('input');
+        inputUrl.type = 'text';
+        inputUrl.placeholder = 'Enter URL';
+        inputUrl.className = 'shape-item-url';
+        inputUrl.value = shape.contentUrl || '';
+        inputUrl.setAttribute('aria-label', `Shape ${idx + 1} content URL`);
+        inputUrl.onchange = (e) => updateShape(idx, 'contentUrl', e.target.value);
+
+        // Show/hide URL input based on content type
+        if (shape.contentType === 'none' || !shape.contentType) {
+            inputUrl.style.display = 'none';
+        }
+
+        contentSection.appendChild(contentTypeSelect);
+        contentSection.appendChild(inputUrl);
+
         // Delete button
         const delBtn = document.createElement('button');
         delBtn.className = 'shape-item-delete';
@@ -462,6 +548,7 @@ function renderShapeList() {
         // Assemble item
         item.appendChild(infoSection);
         item.appendChild(dimsSection);
+        item.appendChild(contentSection);
         item.appendChild(delBtn);
 
         shapeList.appendChild(item);
@@ -1338,11 +1425,35 @@ window.addEventListener('focus', () => {
 });
 
 // --- FULLSCREEN LOGIC ---
+// Detect iOS devices
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
 function toggleFullScreen() {
+    // On iOS, just toggle measuring mode without fullscreen (not supported)
+    if (isIOS()) {
+        appState.isMeasuringMode = !appState.isMeasuringMode;
+        if (appState.isMeasuringMode) {
+            document.body.classList.add('is-measuring');
+            if (exitFullScreenBtn) exitFullScreenBtn.style.display = 'flex';
+            updateDimensions();
+        } else {
+            document.body.classList.remove('is-measuring');
+            if (exitFullScreenBtn) exitFullScreenBtn.style.display = 'none';
+        }
+        return;
+    }
+
+    // Desktop/Android: use fullscreen API
     if (!document.fullscreenElement) {
         appState.isMeasuringMode = true; // User is entering measurement mode
         document.documentElement.requestFullscreen().catch((e) => {
             console.error(`Error attempting to enable fullscreen mode: ${e.message} (${e.name})`);
+            // Fallback: still enable measuring mode even if fullscreen fails
+            document.body.classList.add('is-measuring');
+            if (exitFullScreenBtn) exitFullScreenBtn.style.display = 'flex';
+            updateDimensions();
         });
     } else {
         if (document.exitFullscreen) {
@@ -1353,6 +1464,9 @@ function toggleFullScreen() {
 }
 
 function reenterFullscreen() {
+    // iOS doesn't support fullscreen, skip
+    if (isIOS()) return;
+
     // Re-enter fullscreen after file picker closes (if was in measuring mode)
     if (appState.isMeasuringMode && !document.fullscreenElement) {
         setTimeout(() => {
