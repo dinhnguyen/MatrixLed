@@ -61,6 +61,23 @@ This is a static web application (HTML/CSS/JS). No build step or dependencies re
    python -m http.server 8000
    ```
 
+## Deployment
+
+### Automatic Deployment to Cloudflare Pages
+This project is configured to automatically deploy to Cloudflare Pages on every push to `main`.
+
+📖 **[Complete Deployment Guide](DEPLOYMENT.md)** - Step-by-step instructions for:
+- Cloudflare Pages + GitHub integration (recommended)
+- GitHub Actions setup with API tokens
+- Custom domain configuration
+- Troubleshooting
+
+**Quick Start:**
+1. Connect your GitHub repo to Cloudflare Pages
+2. Set production branch to `main`
+3. Leave build settings empty
+4. Done! Auto-deployment is active.
+
 ## Technologies
 - HTML5
 - CSS3 (Variables, Flexbox, Grid)

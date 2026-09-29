@@ -61,6 +61,23 @@ Live Demo: [http://matrix-led.surge.sh](http://matrix-led.surge.sh)
    python -m http.server 8000
    ```
 
+## Triển khai (Deployment)
+
+### Tự động Deploy lên Cloudflare Pages
+Project này được cấu hình để tự động deploy lên Cloudflare Pages mỗi khi push code lên nhánh `main`.
+
+📖 **[Hướng Dẫn Triển Khai Chi Tiết](DEPLOYMENT.md)** - Hướng dẫn từng bước cho:
+- Tích hợp Cloudflare Pages + GitHub (khuyến nghị)
+- Thiết lập GitHub Actions với API tokens
+- Cấu hình custom domain
+- Xử lý sự cố
+
+**Bắt đầu nhanh:**
+1. Kết nối GitHub repo với Cloudflare Pages
+2. Đặt production branch là `main`
+3. Để trống build settings
+4. Xong! Auto-deployment đã được kích hoạt.
+
 ## Công nghệ
 - HTML5
 - CSS3 (Variables, Flexbox, Grid)

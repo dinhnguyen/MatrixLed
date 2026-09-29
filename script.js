@@ -1,9 +1,14 @@
 // --- CONFIGURATION & STATE ---
 const DEFAULT_PRESET = {
-    xPoints: [58, 108, 382, 435, 495, 1590, 1645, 2465, 2520, 3618, 3670, 3725, 4000, 4055, 4108, 5425, 6685],
+    xPoints: [55, 108, 382, 438, 495, 1590, 1645, 1700, 2465, 2520, 3618, 3670, 3725, 4000, 4055, 4108, 5425, 5480, 6630, 6685, 6740],
     yPoints: [],
     showGuidelines: false,
-    shapes: []
+    shapes: [
+        { name: "Shape 1", x: 58, y: 0, w: 380, h: 602, color: "#FF0000" },
+        { name: "Shape 2", x: 438, y: 0, w: 875, h: 602, color: "#00FF00" },
+        { name: "Shape 3", x: 1313, y: 0, w: 385, h: 602, color: "#0000FF" },
+        { name: "Shape 4", x: 1698, y: 0, w: 1233, h: 602, color: "#FFA500" }
+    ]
 };
 
 let appState = {
